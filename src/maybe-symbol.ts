@@ -1,7 +1,16 @@
-import { Map } from './index'
+import { Map, ParseStatus } from './typings'
 
-export default (map: Map<symbol>) => (value: any) =>
-  map({
-    isCorrect: typeof value === 'symbol',
-    value,
-  })
+const correctTest = (value: unknown) => typeof value === 'symbol'
+
+export default (map: Map<symbol>) => (value: unknown): ParseStatus<symbol> => {
+  const isCorrect = correctTest(value)
+
+  return {
+    isCorrect,
+    value: map({
+      isCorrect,
+      value,
+    }),
+    rawValue: value,
+  }
+}

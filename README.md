@@ -12,9 +12,14 @@ yarn add unknown-schema
 
 ```ts
   import maybeObject from 'unknown-schema/maybe-object'
-  import maybeObject from 'unknown-schema/maybe-object'
+  import maybeString from 'unknown-schema/maybe-string'
+  import maybeNumber from 'unknown-schema/maybe-number'
+  import maybeArray from 'unknown-schema/maybe-array'
 
-  const validator = maybeObject({
+  const unknownJSON = fetch('/some-api-endpoint')
+    .then(response => response.json())
+
+  const safeData = maybeObject({
     user: maybeObject({
       name: maybeString('no name'),
       age: maybeNumber(0),
@@ -26,9 +31,5 @@ yarn add unknown-schema
       image: maybeString('cat.png'),
       tags: maybeArray(maybeString()),
     }))
-  })
-
-  const safeData = fetch('/some-api-endpoint')
-    .then(response => response.json())
-    .then(validator)
+  }).value
 ```

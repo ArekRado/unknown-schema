@@ -16,7 +16,8 @@
     "noUnusedLocals": false,
     "baseUrl": "src",
     "declaration": true,
-    "declarationDir": "./dist/typings.d.ts"
+    "declarationDir": "./dist/typings.d.ts",
+    "esModuleInterop": true,
   },
   "include": ["src/**/*"],
   "exclude": [

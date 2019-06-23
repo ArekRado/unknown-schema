@@ -1,7 +1,18 @@
-import { Map } from './index'
+import { Validator } from './typings'
 
-export default (map: Map<number>) => (value: any) =>
-  map({
-    isCorrect: typeof value === 'number',
-    value,
-  })
+const correctTest = (value: unknown) => typeof value === 'number'
+
+const maybeNumber: Validator<number> = map => value => {
+  const isCorrect = correctTest(value)
+
+  return {
+    isCorrect,
+    value: map({
+      isCorrect,
+      value,
+    }),
+    rawValue: value,
+  }
+}
+
+export default maybeNumber

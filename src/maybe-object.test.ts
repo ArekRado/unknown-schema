@@ -17,18 +17,20 @@ describe('maybe-object', () => {
     maybeBoolean(correctOrDefault(defaultValue))
 
   it('should always return value with the same type', () => {
-    expect(maybeObject({})({})).toEqual({})
-    expect(maybeObject({})('')).toEqual({})
-    expect(maybeObject({})(0)).toEqual({})
-    expect(maybeObject({})(true)).toEqual({})
-    expect(maybeObject({})([])).toEqual({})
+    expect(maybeObject({})({}).value).toEqual({})
+    expect(maybeObject({})('').value).toEqual({})
+    expect(maybeObject({})(0).value).toEqual({})
+    expect(maybeObject({})(true).value).toEqual({})
+    expect(maybeObject({})([]).value).toEqual({})
 
-    expect(maybeObject({})({ test: '', testObj: { test: '' } })).toEqual({})
+    expect(maybeObject({})({ test: '', testObj: { test: '' } }).value).toEqual(
+      {},
+    )
 
     expect(
       maybeObject({ test: someString('test') })({
         test: 'test',
-      }),
+      }).value,
     ).toEqual({ test: 'test' })
 
     expect(
@@ -46,7 +48,7 @@ describe('maybe-object', () => {
         stringTest: 'stringTest',
         booleanTest: false,
         objectTest: { objectTest: { test: 1 } },
-      }),
+      }).value,
     ).toEqual({
       numberTest: 1,
       stringTest: 'stringTest',
@@ -65,7 +67,7 @@ describe('maybe-object', () => {
         }),
       })({
         objectTest: { objectTest: { objectTest: { objectTest: {} } } },
-      }),
+      }).value,
     ).toEqual({
       objectTest: { objectTest: { objectTest: { objectTest: {} } } },
     })

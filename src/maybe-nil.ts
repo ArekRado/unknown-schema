@@ -1,7 +1,18 @@
-import { Map } from './index'
+import { Map, ParseStatus } from './typings'
 
-export default (map: Map<undefined | null>) => (value: any) =>
-  map({
-    isCorrect: value === null || value === undefined,
-    value,
-  })
+const correctTest = (value: unknown) => value === null || value === undefined
+
+export default (map: Map<undefined | null>) => (
+  value: any,
+): ParseStatus<undefined | null> => {
+  const isCorrect = correctTest(value)
+
+  return {
+    isCorrect,
+    value: map({
+      isCorrect,
+      value,
+    }),
+    rawValue: value,
+  }
+}
