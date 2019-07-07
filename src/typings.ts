@@ -48,4 +48,10 @@ export type ObjectParseStatus<Value> = {
 }
 
 export type SchemaTest<Value> = (value: unknown) => ParseStatus<Value>
-export type Validator<Value> = (map: Map<Value>) => SchemaTest<Value>
+
+export type Validator<Value> = (
+  defautValue: Value,
+  map?: Map<Value>,
+) => SchemaTest<Value>
+
+export type CorrectTest = (value: unknown) => boolean

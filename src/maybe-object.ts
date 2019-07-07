@@ -24,7 +24,7 @@ const maybeObject = <Value>(schemaTest: ObjectSchemaTest) => (
       obj[key] = parseStatus
 
       return obj
-    },
+    }, 
     {} as ParseStatus<Value>,
   )
 

@@ -1,17 +1,3 @@
-import { Validator } from './typings'
+import validator from './validator'
 
-const correctTest = (value: unknown) => typeof value === 'boolean'
-
-const maybeBoolean: Validator<boolean> = map => value => {
-  const isCorrect = correctTest(value)
-  return {
-    isCorrect,
-    value: map({
-      isCorrect,
-      value,
-    }),
-    rawValue: value,
-  }
-}
-
-export default maybeBoolean
+export default validator<boolean>(value => typeof value === 'boolean')

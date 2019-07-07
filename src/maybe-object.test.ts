@@ -9,13 +9,6 @@ describe('maybe-object', () => {
     isCorrect,
   }: any) => (isCorrect ? value : defaultValue)
 
-  const someNumber: any = (defaultValue: any) =>
-    maybeNumber(correctOrDefault(defaultValue))
-  const someString: any = (defaultValue: any) =>
-    maybeString(correctOrDefault(defaultValue))
-  const someBoolean: any = (defaultValue: any) =>
-    maybeBoolean(correctOrDefault(defaultValue))
-
   it('should always return value with the same type', () => {
     expect(maybeObject({})({}).value).toEqual({})
     expect(maybeObject({})('').value).toEqual({})
@@ -28,19 +21,31 @@ describe('maybe-object', () => {
     )
 
     expect(
-      maybeObject({ test: someString('test') })({
+      maybeObject({ test: maybeString('test') })({
+        test: 2,
+      }).value,
+    ).toEqual({ test: 'test' })
+
+    expect(
+      maybeObject({ test: maybeNumber(2) })({
+        test: 'test',
+      }).value,
+    ).toEqual({ test: 2 })
+
+    expect(
+      maybeObject({ test: maybeString('test') })({
         test: 'test',
       }).value,
     ).toEqual({ test: 'test' })
 
     expect(
       maybeObject({
-        numberTest: someNumber(1),
-        stringTest: someString('stringTest'),
-        booleanTest: someBoolean(false),
+        numberTest: maybeNumber(1),
+        stringTest: maybeString('stringTest'),
+        booleanTest: maybeBoolean(false),
         objectTest: maybeObject({
           objectTest: maybeObject({
-            test: someNumber(1),
+            test: maybeNumber(1),
           }),
         }),
       })({

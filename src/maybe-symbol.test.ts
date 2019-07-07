@@ -6,6 +6,7 @@ describe('maybe-symbol', () => {
     const anySymbol = ({ value, isCorrect }: any) =>
       isCorrect ? value : symbol
 
-    expect(maybeSymbol(anySymbol)(symbol).value).toBe(symbol)
+    expect(maybeSymbol(symbol)(symbol).value).toBe(symbol)
+    expect(maybeSymbol(Symbol(), anySymbol)(symbol).value).toBe(symbol)
   })
 })
