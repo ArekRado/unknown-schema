@@ -2,6 +2,7 @@ import maybeNumber from './maybe-number'
 import maybeBoolean from './maybe-boolean'
 import maybeString from './maybe-string'
 import maybeObject from './maybe-object'
+import maybeArray from './maybe-array'
 
 describe('maybe-object', () => {
   const correctOrDefault: any = (defaultValue: any) => ({
@@ -75,6 +76,54 @@ describe('maybe-object', () => {
       }).value,
     ).toEqual({
       objectTest: { objectTest: { objectTest: { objectTest: {} } } },
+    })
+
+    expect(
+      maybeObject({
+        someArray: maybeArray(maybeNumber(1)),
+      })({
+        someArray: ['2', '1', 'asdasd', {}],
+      }).value,
+    ).toEqual({
+      someArray: [1, 1, 1, 1],
+    })
+
+    expect(
+      maybeObject({
+        someArray: maybeArray(maybeNumber(1)),
+      })({
+        someArray: {},
+      }).value,
+    ).toEqual({
+      someArray: [],
+    })
+
+    expect(
+      maybeObject({
+        someArray: maybeArray(maybeNumber(1)),
+      })({
+        someArray: 1,
+      }).value,
+    ).toEqual({
+      someArray: [],
+    })
+
+    expect(
+      maybeObject({
+        meta: maybeObject({
+          limit: maybeNumber(0),
+        }),
+      })({
+        data: {
+          meta: {
+            limit: 20,
+          },
+        },
+      }).value,
+    ).toEqual({
+      meta: {
+        limit: 0,
+      },
     })
   })
 })

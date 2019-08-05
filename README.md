@@ -2,34 +2,49 @@
 
 Schema protector to transform any unknown value into expected schema
 
-```
-npm i unknown-schema
-```
+How it works: https://uodod.codesandbox.io/
 
 ```
+npm i unknown-schema
+
 yarn add unknown-schema
 ```
 
 ```ts
-  import maybeObject from 'unknown-schema/maybe-object'
-  import maybeString from 'unknown-schema/maybe-string'
-  import maybeNumber from 'unknown-schema/maybe-number'
-  import maybeArray from 'unknown-schema/maybe-array'
+  import { maybeObject, maybeString, maybeNumber, maybeArray } from 'unknown-schema'
 
-  const unknownJSON = fetch('/some-api-endpoint')
+  type UsersProducts = {
+    users: {
+      firstName: string;
+      lastName: string;
+      products: number[];
+    }[];
+    products: {
+      name: string;
+      price: number;
+      id: number;
+    }[];
+  };
+
+  const validator = maybeObject({
+    users: maybeArray(
+      maybeObject({
+        firstName: maybeString(''),
+        lastName: maybeString(''),
+        products: maybeArray(maybeNumber(-1))
+      })
+    ),
+    products: maybeArray(
+      maybeObject({
+        name: maybeString(''),
+        price: maybeNumber(0),
+        id: maybeNumber(-1)
+      })
+    )
+  });
+
+  const unknownJSON: unknown = fetch('/some-api-endpoint')
     .then(response => response.json())
 
-  const safeData = maybeObject({
-    user: maybeObject({
-      name: maybeString('no name'),
-      age: maybeNumber(0),
-    }),
-    products: maybeArray(maybeObject({
-      id: maybeNumber(null),
-      name: maybeString('default name'),
-      description: maybeString(null),
-      image: maybeString('cat.png'),
-      tags: maybeArray(maybeString()),
-    }))
-  }).value
+  const safeData: UsersProducts = validator(unknownJSON).value
 ```

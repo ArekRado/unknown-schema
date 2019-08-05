@@ -14,7 +14,7 @@ const maybeObject = <Value>(schemaTest: ObjectSchemaTest) => (
 
   const parseStatus = properties.reduce(
     (obj, key) => {
-      const parseStatus = schemaTest[key]((rawValue as any)[key])
+      const parseStatus = schemaTest[key]((rawValue || {})[key])
 
       if (!parseStatus.isCorrect) {
         isCorrect = false
@@ -24,7 +24,7 @@ const maybeObject = <Value>(schemaTest: ObjectSchemaTest) => (
       obj[key] = parseStatus
 
       return obj
-    }, 
+    },
     {} as ParseStatus<Value>,
   )
 
