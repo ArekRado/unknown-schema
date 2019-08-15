@@ -47,5 +47,26 @@ describe('maybe-array', () => {
         }),
       )(() => {}).value,
     ).toEqual([])
+
+    expect(
+      maybeArray(maybeObject({ firstName: maybeString('') }))([
+        { firstName: 0 },
+      ]).value,
+    ).toEqual([{ firstName: '' }])
+
+    expect(
+      maybeArray(maybeObject({ firstName: maybeString('') }))([
+        { firstName: 0 },
+      ]).parseStatus,
+    ).toEqual([
+      {
+        isCorrect: false,
+        parseStatus: {
+          firstName: { isCorrect: false, rawValue: 0, value: '' },
+        },
+        rawValue: { firstName: 0 },
+        value: { firstName: '' },
+      },
+    ])
   })
 })

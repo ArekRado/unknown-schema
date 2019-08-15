@@ -16,6 +16,8 @@ describe('maybe-object', () => {
     expect(maybeObject({})(0).value).toEqual({})
     expect(maybeObject({})(true).value).toEqual({})
     expect(maybeObject({})([]).value).toEqual({})
+    expect(maybeObject({})(null).value).toEqual({})
+    expect(maybeObject({})(undefined).value).toEqual({})
 
     expect(maybeObject({})({ test: '', testObj: { test: '' } }).value).toEqual(
       {},
